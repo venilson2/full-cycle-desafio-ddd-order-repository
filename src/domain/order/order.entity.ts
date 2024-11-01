@@ -1,65 +1,26 @@
-import { v7 as uuid } from 'uuid'
-import { OrderItemEntity } from "./orderItem.entity";
+import OrderInterface from "./order.spec";
 
-export class OrderEntity {
-    private id: string;
-    private customerId: string;
-    private items: OrderItemEntity[] = [];
+export class OrderEntity implements OrderInterface {
+  private _id: string;
+  private _customerId: string;
   
-  constructor(params: {id?:string, customerId?: string}) {
-      this.id = params.id || uuid();
-      this.customerId = params.customerId || uuid();
+  constructor(params: {id:string, customerId: string}) {
+    this._id = params.id; 
+    this._customerId = params.customerId;
+    this.validate();
   }
 
-  public addItem(productId: string, quantity: number, price: number): void {
-      if (quantity <= 0) {
-          throw new Error("Quantity must be greater than zero.");
-      }
-      if (price <= 0) {
-          throw new Error("Price must be greater than zero.");
-      }
-      
-      const existingItem = this.items.find(item => item.productId === productId);
-      
-      if (existingItem) {
-          existingItem.quantity += quantity;
-      } else {
-
-        const order = new OrderEntity({});
-
-        const orderItem = new OrderItemEntity({
-          productId: productId,
-          quantity: quantity,
-          price: price,
-          orderId: order.id
-        });
-        this.items.push(orderItem);
-      }
+  validate(): boolean {
+    if(this._id.length === 0)throw new Error('Id is required')
+    if (this._customerId.length === 0) throw new Error("Customer Id is required");
+    return true;
   }
 
-  public removeItem(productId: string): void {
-      const itemIndex = this.items.findIndex(item => item.productId === productId);
-      
-      if (itemIndex === -1) {
-          throw new Error("Item not found in order.");
-      }
-      
-      this.items.splice(itemIndex, 1);
+  get id(): string {
+    return this._id;
   }
 
-  public calculateTotal(): number {
-      return this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
-  }
-
-  public getId(): string {
-    return this.id;
-  }
-
-  public getItems(): OrderItemEntity[] {
-    return this.items;
-  }
-
-  public getCustomerId(): string {
-    return this.customerId;
+  get customerId(): string {
+    return this._customerId;
   }
 }

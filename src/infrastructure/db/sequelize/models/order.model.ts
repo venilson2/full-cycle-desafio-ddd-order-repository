@@ -1,10 +1,10 @@
 import { Column, Model, PrimaryKey, Table, DataType } from 'sequelize-typescript';
 
 @Table({
-  tableName: 'orders',
-  timestamps: true
+  tableName: "orders",
+  timestamps: false,
 })
-export class OrderModel extends Model<OrderModel> {
+export class OrderModel extends Model {
   
   @PrimaryKey
   @Column({
@@ -12,5 +12,11 @@ export class OrderModel extends Model<OrderModel> {
     allowNull: false
   })
   declare id: string; 
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false
+  })
+  declare customerId: string;
 
 }
