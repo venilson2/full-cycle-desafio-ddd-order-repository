@@ -1,6 +1,4 @@
-import OrderInterface from "./order.spec";
-
-export class OrderEntity implements OrderInterface {
+export class OrderEntity {
   private _id: string;
   private _customerId: string;
   

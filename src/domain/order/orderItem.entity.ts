@@ -1,6 +1,6 @@
-import { v7 as uuid } from 'uuid'
+import { v4 as uuid } from 'uuid'
 
-export class OrderItemEntity{
+export class OrderItemEntity {
   private _id: string;
   private _productId: string;
   private _quantity: number;
